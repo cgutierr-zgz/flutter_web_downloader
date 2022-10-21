@@ -1,10 +1,10 @@
 import 'dart:convert';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
+
 import 'dart:typed_data';
 
 import 'package:flutter_web_downloader/src/mime_types.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
 
 /// Set of usefful functions to download files
 /// from the internet using Flutter web.
@@ -22,12 +22,12 @@ import 'package:http/http.dart' as http;
 /// FlutterWebDownloader.urlRegex
 /// // Validate a given url
 /// FlutterWebDownloader.isValidUrl(...)
+/// // Get the file extension from a given file.
+/// FlutterWebDownloader.fileExtensionFromFile(...)
 /// // Get a file extension from a given mime type
 /// FlutterWebDownloader.fileExtensionFromMimeType(...)
 /// // Get a mime type from a given file extension
 /// FlutterWebDownloader.mimeTypesFromExtension(...)
-/// // Get a mime type from a given file extension
-/// FlutterWebDownloader.isImageFromExtension(...)
 /// // Checks if a given file is an image
 /// FlutterWebDownloader.isImageFromMimeType(...)
 /// ```
@@ -40,6 +40,9 @@ abstract class FlutterWebDownloader {
 
   /// Checks if a given `input` is a valid url.
   static bool isValidUrl(String url) => urlRegex.hasMatch(url);
+
+  /// Get a file extension from a given file.
+  static String fileExtensionFromFile(String file) => '''.${file.split('.').last}''';
 
   /// The given extension of the file for a specific mime type.
   /// For example: `.html` for the mime type `text/html`.
@@ -67,20 +70,6 @@ abstract class FlutterWebDownloader {
       }
     }
     return null;
-  }
-
-  /// Wether the given extension is an image or not.
-  /// For example: `.png` is an image.
-  /// For example: `.html` is not an image.
-  static bool isImageFromExtension(
-    /// The extension of the file.
-    String ext,
-  ) {
-    for (final element in MimeType.values) {
-      return element.fileExtension == ext && element.mimeType.contains('image');
-    }
-
-    return false;
   }
 
   /// Wether the given mime type is an image or not.
@@ -182,12 +171,12 @@ abstract class FlutterWebDownloader {
     // Create the link with the file encoded in base64
     final base64 = base64Encode(bytes);
     final anchor =
-        AnchorElement(href: 'data:application/octet-stream;base64,$base64')
+        html.AnchorElement(href: 'data:application/octet-stream;base64,$base64')
           ..target = 'blank'
           ..download = '$name$ext';
 
     // Triggers the download
-    document.body?.append(anchor);
+    html.document.body?.append(anchor);
     anchor
       ..click()
       ..remove();

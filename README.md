@@ -1,5 +1,6 @@
 # Flutter Web Downloader
 
+![coverage][coverage_badge]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
@@ -57,6 +58,7 @@ genhtml coverage/lcov.info -o coverage/
 open coverage/index.html
 ```
 
+[coverage_badge]: coverage_badge.svg
 [flutter_install_link]: https://docs.flutter.dev/get-started/install
 [github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
